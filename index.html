@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sub A Car</title>
+  <style>
+    /* iframe พื้นหลังเต็มจอ */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #backgroundIframe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+      pointer-events: none; /* คลิกทะลุ iframe */
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      df-messenger {
+    --df-messenger-chat-window-width: 100vw !important;
+    --df-messenger-chat-window-height: 80vh !important;
+    --df-messenger-chat-border-radius: 0 !important; /* เอามุมโค้งออกเพื่อเต็มจอ */
+    bottom: 0 !important;
+    right: 0 !important;
+  }
+
+      #clearChatBtn {
+        right: 80px !important;
+        bottom: 10px !important;
+        font-size: 12px !important;
+        padding: 8px 12px !important;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+  <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+  <style>
+    #chatContainer,
+    .chat-widget,
+    .tawk-chat,
+    .floating-chat {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- ลิงก์ไปยัง about.html แทน iframe พื้นหลัง -->
+  <iframe
+    id="backgroundIframe"
+    src="https://www.subacar.co.th/package"
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+      pointer-events: none;
+    ">
+  </iframe>
+  <df-messenger
+    location="asia-southeast2"
+    project-id="conversational-ui-kthd"
+    agent-id="a87093b2-5da2-496d-8abb-280f22c53bcc"
+    intent="WELCOME"
+    language-code="th"
+    max-query-length="-1"
+    chat-icon="https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7"
+    placeholder-text="ถามคำถาม"
+    style="
+          --df-messenger-button-titlebar-color:#469979; 
+          --df-messenger-button-titlebar-icon-color:#000; 
+          --df-messenger-primary-color:#FF5511; 
+          --df-messenger-chat-window-width:30vw; 
+          --df-messenger-chat-window-height:80vh; 
+          --df-messenger-message-font-size: 16px; 
+          --df-messenger-button-titlebar-icon-url: url('https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7');
+          ">
+    <df-messenger-chat-bubble
+      chat-title="Chatbot"
+      chat-title-icon="https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7"
+      bot-actor-image="https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7">
+    </df-messenger-chat-bubble>
+  </df-messenger>
+<script>
+document.querySelector('df-messenger')?.addEventListener('df-messenger-loaded', () => {
+  const chatInput = document.querySelector('df-messenger')
+    .shadowRoot.querySelector('df-messenger-chat')
+    .shadowRoot.querySelector('input[placeholder="Ask something…"]');
+
+  if(chatInput) {
+    chatInput.placeholder = "ถามคำถาม";
+  }
+});
+</script>
+  <button id="clearChatBtn" style="
+    position: fixed;
+    bottom: 18px;
+    right: 100px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FF5511;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 1000;
+  ">ล้างแชต</button>
+  <script>
+  function overrideAllIcons(messengerInstance) {
+  const shadow = messengerInstance.shadowRoot;
+  if (!shadow) return;
+
+  const applyCustomIcon = () => {
+    // Replace chat button icon in df-messenger-chat
+    const chatButton = shadow.querySelector('df-messenger-chat')?.shadowRoot?.querySelector('button.close-button.bubble.focus-outline');
+    if (chatButton && !chatButton.dataset.replaced) {
+      const svgIcon = chatButton.querySelector('span.icon svg');
+      if (svgIcon) {
+        const img = document.createElement('img');
+        img.src = "https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7";
+        img.style.width = "100%";
+        img.style.height = "100%";
+        svgIcon.replaceWith(img);
+      }
+
+      const closeSVG = chatButton.querySelector('span.close-icon svg');
+      if (closeSVG) {
+        const imgClose = document.createElement('img');
+        imgClose.src = "https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7";
+        imgClose.style.width = "100%";
+        imgClose.style.height = "100%";
+        closeSVG.replaceWith(imgClose);
+      }
+
+      chatButton.dataset.replaced = 'true';
+    }
+
+    // Replace chat bubble icon in df-messenger-chat-bubble
+    const chatBubble = shadow.querySelector('df-messenger-chat-bubble');
+    if (chatBubble) {
+      const bubbleShadow = chatBubble.shadowRoot;
+      if (bubbleShadow) {
+        const bubbleIcon = bubbleShadow.querySelector('img[part="chat-title-icon"]');
+        if (bubbleIcon && !bubbleIcon.dataset.replaced) {
+          bubbleIcon.src = "https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7";
+          bubbleIcon.style.width = "24px";
+          bubbleIcon.style.height = "24px";
+          bubbleIcon.dataset.replaced = "true";
+        }
+      }
+    }
+  };
+
+  // รันตอนโหลด
+  applyCustomIcon();
+
+  // เฝ้าดู Shadow DOM ถ้ามีการ re-render
+  const observer = new MutationObserver(() => applyCustomIcon());
+  observer.observe(shadow, { childList: true, subtree: true });
+
+  // เฝ้าดู df-messenger-chat-bubble Shadow DOM ด้วย
+  const chatBubble = shadow.querySelector('df-messenger-chat-bubble');
+  if (chatBubble) {
+    const bubbleShadow = chatBubble.shadowRoot;
+    if (bubbleShadow) {
+      const bubbleObserver = new MutationObserver(() => {
+        const bubbleIcon = bubbleShadow.querySelector('img[part="chat-title-icon"]');
+        if (bubbleIcon) {
+          bubbleIcon.src = "https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7";
+          bubbleIcon.style.width = "24px";
+          bubbleIcon.style.height = "24px";
+          bubbleIcon.dataset.replaced = "true";
+        }
+      });
+      bubbleObserver.observe(bubbleShadow, { childList: true, subtree: true });
+    }
+  }
+}
+
+(() => {
+  const messenger = document.querySelector('df-messenger');
+  if (!messenger) {
+    console.warn("df-messenger element not found!");
+    return;
+  }
+
+  messenger.addEventListener('df-messenger-loaded', () => {
+    overrideAllIcons(messenger);
+
+    // Trigger intent WELCOME หลัง messenger โหลดเสร็จ
+    messenger.eventEmitter.emit('df-event', { name: 'WELCOME' });
+  });
+})();
+
+  // สำหรับปุ่มล้างแชท
+  const dfMessenger = document.querySelector('df-messenger');
+
+  document.getElementById("clearChatBtn").addEventListener("click", () => {
+    // เริ่ม session ใหม่ ลบข้อความเก่า
+    dfMessenger.startNewSession({ retainHistory: false });
+
+    // เปิด chat box หลังรีเซ็ต
+    dfMessenger.setAttribute("opened", "true");
+
+    // override icons หลัง messenger โหลด
+    const interval = setInterval(() => {
+      const chatRoot = dfMessenger.shadowRoot
+        ?.querySelector("df-messenger-chat")
+        ?.shadowRoot;
+      if (!chatRoot) return;
+      const chatButton = chatRoot.querySelector("button[part='button-titlebar']");
+      const img = chatButton?.querySelector("img");
+      if (img) {
+        img.src = "https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7";
+        img.style.width = "100%";
+        img.style.height = "100%";
+      }
+      const headerIcon = chatRoot.querySelector("img[part='title-icon']");
+      if (headerIcon) {
+        headerIcon.src = "https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7";
+        headerIcon.style.width = "24px";
+        headerIcon.style.height = "24px";
+        clearInterval(interval);
+      }
+    }, 200);
+  });
+
+  // Event listener สำหรับตรวจสอบสถานะเปิด/ปิด chat
+  window.addEventListener('df-chat-open-changed', (event) => {
+    console.log(`Chat is ${event.detail.isOpen ? 'open' : 'closed'}`);
+  });
+  </script>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  z-index: 2000;
+">
+  <div class="spinner" style="
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #FF5511;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+  "></div>
+  <div style="font-size: 18px; color: #FF5511;">กำลังโหลด...</div>
+</div>
+
+<script>
+  // ซ่อน overlay เมื่อ iframe โหลดเสร็จ
+  const iframe = document.getElementById("backgroundIframe");
+  const overlay = document.getElementById("loadingOverlay");
+
+  iframe.onload = () => {
+    overlay.style.display = "none";
+  };
+</script>
+
+<style>
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</body>
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    --df-messenger-font-color: #000;
+    --df-messenger-font-family: Arial;
+    --df-messenger-chat-background: #fff;
+    --df-messenger-message-user-background: #d3e3fd;
+    --df-messenger-message-bot-background: #ddd;
+    /* Typing Indicator */
+    --df-messenger-message-bot-writing-background: #e0f7fa;
+    --df-messenger-message-bot-writing-font-color: #469979;
+    --df-messenger-message-bot-writing-font-weight: bold;
+    --df-messenger-message-bot-writing-font-size: 20px;
+    --df-messenger-message-bot-writing-border: 1px solid #b2dfdb;
+    --df-messenger-message-bot-writing-padding: 14px;
+    bottom: 16px;
+    right: 16px;
+    --df-messenger-button-titlebar-icon-url: url('https://img.icons8.com/?size=96&id=oizVkflf4uIT&format=gif&color=f7f7f7');
+  }
+</style>
+</html>
