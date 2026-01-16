@@ -9,13 +9,13 @@ from langchain_community.callbacks import get_openai_callback
 import time
 import logging
 import json
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import re  # เพิ่มเข้ามาเพื่อช่วยตรวจ pattern
 
 # =====================
 # Setup
 # =====================
-load_dotenv()
+# load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -281,7 +281,7 @@ with st.sidebar:
 @st.cache_resource
 def load_rag_chain():
     embedding = HuggingFaceEmbeddings(
-        model_name="BAAI/bge-m3"
+        model_name="BAAI/bge-small-en-v1.5"
     )
 
     vectorstore = Chroma(
