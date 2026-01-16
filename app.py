@@ -9,13 +9,13 @@ from langchain_community.callbacks import get_openai_callback
 import time
 import logging
 import json
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import re  # เพิ่มเข้ามาเพื่อช่วยตรวจ pattern
 
 # =====================
 # Setup
 # =====================
-load_dotenv()
+# load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,
