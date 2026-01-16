@@ -16,7 +16,7 @@ JSONL_FILES = [
 CHROMA_DIR = "chroma_db"
 COLLECTION_NAME = "subacar_all"
 
-EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
+EMBEDDING_MODEL = "BAAI/bge-m3"
 # or: "sentence-transformers/all-MiniLM-L6-v2"
 
 # =====================
@@ -82,7 +82,6 @@ vectorstore = Chroma.from_documents(
     collection_name=COLLECTION_NAME
 )
 
-vectorstore.persist()
 
 print("✅ Chroma rebuilt from JSONL")
 print(f"📐 Embedding dim = {len(embedding.embed_query('test'))}")

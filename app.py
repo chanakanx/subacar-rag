@@ -281,7 +281,7 @@ with st.sidebar:
 @st.cache_resource
 def load_rag_chain():
     embedding = HuggingFaceEmbeddings(
-        model_name="BAAI/bge-small-en-v1.5"
+        model_name="BAAI/bge-m3"
     )
 
     vectorstore = Chroma(
